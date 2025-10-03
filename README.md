@@ -18,7 +18,7 @@ LeopoldPlan is a Windows Forms application for managing tasks using a SQL Server
 
 ## Setup
 
-1. Clone the repository: git clone https://github.com/yourusername/LeopoldPlan.git
+1. Clone the repository: git clone https://github.com/leopoldbonfils/LeopoldPlanner.git
 2. Open the solution in Visual Studio.
 3. Ensure your SQL Server is running and the connection string in `Taskform.cs` matches your server and database.
 4. Create the `Task` table in your database:
