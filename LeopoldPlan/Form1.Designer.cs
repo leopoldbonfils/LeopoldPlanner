@@ -37,6 +37,7 @@
             this.linkRegister = new System.Windows.Forms.LinkLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
+            this.AdminCheckBox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,12 +84,13 @@
             // 
             // loginBtn
             // 
-            this.loginBtn.Location = new System.Drawing.Point(498, 300);
+            this.loginBtn.Location = new System.Drawing.Point(487, 327);
             this.loginBtn.Name = "loginBtn";
             this.loginBtn.Size = new System.Drawing.Size(125, 43);
             this.loginBtn.TabIndex = 5;
             this.loginBtn.Text = "Login";
             this.loginBtn.UseVisualStyleBackColor = true;
+            this.loginBtn.Click += new System.EventHandler(this.loginBtn_Click);
             // 
             // linkRegister
             // 
@@ -99,6 +101,7 @@
             this.linkRegister.TabIndex = 6;
             this.linkRegister.TabStop = true;
             this.linkRegister.Text = "Click here to Register";
+            this.linkRegister.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkRegister_LinkClicked);
             // 
             // panel1
             // 
@@ -121,11 +124,22 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "Welcome to Leopld Plan";
             // 
+            // AdminCheckBox
+            // 
+            this.AdminCheckBox.AutoSize = true;
+            this.AdminCheckBox.Location = new System.Drawing.Point(346, 277);
+            this.AdminCheckBox.Name = "AdminCheckBox";
+            this.AdminCheckBox.Size = new System.Drawing.Size(218, 24);
+            this.AdminCheckBox.TabIndex = 8;
+            this.AdminCheckBox.Text = "If you are admin click here";
+            this.AdminCheckBox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.AdminCheckBox);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.linkRegister);
             this.Controls.Add(this.loginBtn);
@@ -154,6 +168,7 @@
         private System.Windows.Forms.LinkLabel linkRegister;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox AdminCheckBox;
     }
 }
 

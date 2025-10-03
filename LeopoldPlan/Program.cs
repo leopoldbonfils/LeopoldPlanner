@@ -16,7 +16,7 @@ namespace LeopoldPlan
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Taskform());
+            Application.Run(new Form1());
         }
     }
 }

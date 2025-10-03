@@ -43,6 +43,7 @@
             this.taskNameBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.ReportBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.taskGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,7 +78,7 @@
             // SearchBtn
             // 
             this.SearchBtn.Font = new System.Drawing.Font("High Tower Text", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SearchBtn.Location = new System.Drawing.Point(852, 137);
+            this.SearchBtn.Location = new System.Drawing.Point(783, 133);
             this.SearchBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SearchBtn.Name = "SearchBtn";
             this.SearchBtn.Size = new System.Drawing.Size(140, 51);
@@ -92,7 +93,7 @@
             this.searchBox.Location = new System.Drawing.Point(482, 137);
             this.searchBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.searchBox.Name = "searchBox";
-            this.searchBox.Size = new System.Drawing.Size(300, 44);
+            this.searchBox.Size = new System.Drawing.Size(284, 44);
             this.searchBox.TabIndex = 49;
             // 
             // DeleteBtn
@@ -128,7 +129,7 @@
             this.taskGridView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.taskGridView.Name = "taskGridView";
             this.taskGridView.RowHeadersWidth = 62;
-            this.taskGridView.Size = new System.Drawing.Size(510, 345);
+            this.taskGridView.Size = new System.Drawing.Size(580, 345);
             this.taskGridView.TabIndex = 46;
             // 
             // label4
@@ -208,11 +209,23 @@
             this.label1.TabIndex = 39;
             this.label1.Text = "Task Management Form";
             // 
+            // ReportBtn
+            // 
+            this.ReportBtn.Font = new System.Drawing.Font("High Tower Text", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReportBtn.Location = new System.Drawing.Point(931, 130);
+            this.ReportBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.ReportBtn.Name = "ReportBtn";
+            this.ReportBtn.Size = new System.Drawing.Size(131, 51);
+            this.ReportBtn.TabIndex = 54;
+            this.ReportBtn.Text = "Report";
+            this.ReportBtn.UseVisualStyleBackColor = true;
+            // 
             // Taskform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1031, 554);
+            this.ClientSize = new System.Drawing.Size(1075, 554);
+            this.Controls.Add(this.ReportBtn);
             this.Controls.Add(this.endDate);
             this.Controls.Add(this.startDate);
             this.Controls.Add(this.statusCombo);
@@ -253,5 +266,6 @@
         private System.Windows.Forms.TextBox taskNameBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button ReportBtn;
     }
 }
