@@ -24,16 +24,17 @@ namespace LeopoldPlan
             using (SqlConnection conn = new SqlConnection(strCon))
             {
                 conn.Open();
-                string query = "SELECT role FROM User1 WHERE email=@em AND password=@pw";
+                string query = "SELECT TRIM(role) FROM User1 WHERE email=@em AND password=@pw";
                 SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@em", txtEmail.Text);
-                cmd.Parameters.AddWithValue("@pw", txtPassword.Text);
+                cmd.Parameters.AddWithValue("@em", txtEmail.Text.Trim());
+                cmd.Parameters.AddWithValue("@pw", txtPassword.Text.Trim());
 
                 object result = cmd.ExecuteScalar();
 
                 if (result != null)
                 {
-                    string roleFromDB = result.ToString();
+                    string roleFromDB = result.ToString().Trim().ToLower(); 
+                    MessageBox.Show($"Logged in as: {roleFromDB}"); 
 
                     Taskform tf = new Taskform(roleFromDB);
                     tf.Show();
@@ -44,8 +45,6 @@ namespace LeopoldPlan
                     MessageBox.Show("Invalid email or password!");
                 }
             }
-
-
         }
 
         private void linkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

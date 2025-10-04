@@ -2,7 +2,10 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
-
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
 
 namespace LeopoldPlan
 {
@@ -10,7 +13,6 @@ namespace LeopoldPlan
     {
         private string userRole;
 
-        
         public Taskform(string role)
         {
             InitializeComponent();
@@ -21,21 +23,41 @@ namespace LeopoldPlan
 
         private void SetupRoleUI()
         {
-            if (userRole == "User")
+            // Normalize role text (remove spaces, make lowercase)
+            string normalizedRole = userRole.Trim().ToLower();
+
+            // Optional: show what role is logged in (for debugging)
+            MessageBox.Show($"Logged in as: {normalizedRole}");
+
+            if (normalizedRole == "user")
             {
-                
-                UpdateBtn.Enabled = false;
-                DeleteBtn.Enabled = false;
-                RegisterBtn.Enabled = false;
-                ReportBtn.Enabled = false; 
+                // Hide admin-only buttons for normal users
+                UpdateBtn.Visible = false;
+                DeleteBtn.Visible = false;
+                RegisterBtn.Visible = false;
+                ReportBtn.Visible = false;
+
+                // Or if you prefer disabling them instead:
+                // UpdateBtn.Enabled = false;
+                // DeleteBtn.Enabled = false;
+                // RegisterBtn.Enabled = false;
+                // ReportBtn.Enabled = false;
             }
-            else if (userRole == "Admin")
+            else if (normalizedRole == "admin")
             {
-                
-                UpdateBtn.Enabled = true;
-                DeleteBtn.Enabled = true;
-                RegisterBtn.Enabled = true;
-                ReportBtn.Enabled = true;
+                // Show all admin buttons
+                UpdateBtn.Visible = true;
+                DeleteBtn.Visible = true;
+                RegisterBtn.Visible = true;
+                ReportBtn.Visible = true;
+            }
+            else
+            {
+                MessageBox.Show("Unknown role. Limited access only.");
+                UpdateBtn.Visible = false;
+                DeleteBtn.Visible = false;
+                RegisterBtn.Visible = false;
+                ReportBtn.Visible = false;
             }
         }
 
@@ -46,10 +68,10 @@ namespace LeopoldPlan
             using (SqlConnection conn = new SqlConnection(strCon))
             {
                 conn.Open();
-                string query = "INSERT INTO Task VALUES(@taskName, @sts)";
+                string query = "INSERT INTO Task (taskName, status) VALUES(@taskName, @sts)";
                 SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@taskName", "Data structure");
-                cmd.Parameters.AddWithValue("@sts", "In progress");
+                cmd.Parameters.AddWithValue("@taskName", taskNameBox.Text);
+                cmd.Parameters.AddWithValue("@sts", statusCombo.Text);
                 cmd.ExecuteNonQuery();
             }
             DisplayData();
@@ -145,6 +167,59 @@ namespace LeopoldPlan
                 else
                 {
                     MessageBox.Show("Please enter a valid Task ID.");
+                }
+            }
+        }
+
+        private void LogoutBtn_Click(object sender, EventArgs e)
+        {
+            Form1 form = new Form1();
+            form.Show();
+            this.Hide();
+        }
+
+        private void ReportBtn_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog sfd = new SaveFileDialog() { Filter = "PDF files|*.pdf", FileName = "TaskReport.pdf" })
+            {
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        using (var writer = new iText.Kernel.Pdf.PdfWriter(sfd.FileName))
+                        {
+                            var pdf = new iText.Kernel.Pdf.PdfDocument(writer);
+                            var document = new iText.Layout.Document(pdf);
+
+                            document.Add(new iText.Layout.Element.Paragraph("Task Report").SetFontSize(18));
+
+                            var table = new iText.Layout.Element.Table(taskGridView.Columns.Count);
+
+                            
+                            foreach (DataGridViewColumn column in taskGridView.Columns)
+                            {
+                                table.AddHeaderCell(column.HeaderText);
+                            }
+
+                            
+                            foreach (DataGridViewRow row in taskGridView.Rows)
+                            {
+                                foreach (DataGridViewCell cell in row.Cells)
+                                {
+                                    table.AddCell(cell.Value?.ToString() ?? "");
+                                }
+                            }
+
+                            document.Add(table);
+                            document.Close();
+                        }
+
+                        MessageBox.Show("Report saved successfully!");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error creating PDF: " + ex.Message);
+                    }
                 }
             }
         }

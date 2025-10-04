@@ -44,6 +44,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.ReportBtn = new System.Windows.Forms.Button();
+            this.LogoutBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.taskGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -219,12 +220,24 @@
             this.ReportBtn.TabIndex = 54;
             this.ReportBtn.Text = "Report";
             this.ReportBtn.UseVisualStyleBackColor = true;
+            this.ReportBtn.Click += new System.EventHandler(this.ReportBtn_Click);
+            // 
+            // LogoutBtn
+            // 
+            this.LogoutBtn.Location = new System.Drawing.Point(948, 28);
+            this.LogoutBtn.Name = "LogoutBtn";
+            this.LogoutBtn.Size = new System.Drawing.Size(92, 37);
+            this.LogoutBtn.TabIndex = 55;
+            this.LogoutBtn.Text = "Log out";
+            this.LogoutBtn.UseVisualStyleBackColor = true;
+            this.LogoutBtn.Click += new System.EventHandler(this.LogoutBtn_Click);
             // 
             // Taskform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1075, 554);
+            this.Controls.Add(this.LogoutBtn);
             this.Controls.Add(this.ReportBtn);
             this.Controls.Add(this.endDate);
             this.Controls.Add(this.startDate);
@@ -267,5 +280,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button ReportBtn;
+        private System.Windows.Forms.Button LogoutBtn;
     }
 }
