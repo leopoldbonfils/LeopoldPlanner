@@ -34,7 +34,7 @@ namespace LeopoldPlan
                 if (result != null)
                 {
                     string roleFromDB = result.ToString().Trim().ToLower(); 
-                    MessageBox.Show($"Logged in as: {roleFromDB}"); 
+                     
 
                     Taskform tf = new Taskform(roleFromDB);
                     tf.Show();

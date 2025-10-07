@@ -19,6 +19,11 @@ namespace LeopoldPlan
             userRole = role;
             SetupRoleUI();
             DisplayData();
+
+            statusCombo.Items.Add("Pending");
+            statusCombo.Items.Add("In Progress");
+            statusCombo.Items.Add("Completed");
+            statusCombo.SelectedIndex = 0; 
         }
 
         private void SetupRoleUI()
@@ -68,11 +73,22 @@ namespace LeopoldPlan
             using (SqlConnection conn = new SqlConnection(strCon))
             {
                 conn.Open();
-                string query = "INSERT INTO Task (taskName, status) VALUES(@taskName, @sts)";
+                string query = "INSERT INTO Task (taskName, status, StartDate, EndDate) VALUES(@taskName, @sts, @StartDate, @EndDate)";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@taskName", taskNameBox.Text);
-                cmd.Parameters.AddWithValue("@sts", statusCombo.Text);
-                cmd.ExecuteNonQuery();
+                cmd.Parameters.AddWithValue("@sts", statusCombo.SelectedItem.ToString());
+                cmd.Parameters.AddWithValue("@StartDate", startDate.Value.Date);
+                cmd.Parameters.AddWithValue("@EndDate", endDate.Value.Date);
+
+                int rowAffected = cmd.ExecuteNonQuery();
+
+                if (rowAffected > 0 ) { 
+                    MessageBox.Show("Registration successfully!");
+                }
+                else
+                {
+                    MessageBox.Show("Failed to Registration.");
+                }
             }
             DisplayData();
         }
@@ -99,19 +115,27 @@ namespace LeopoldPlan
 
                 if (int.TryParse(searchBox.Text, out taskId))
                 {
-                    string query = "UPDATE Task SET taskName=@taskName, status=@status WHERE taskID=@taskID";
+                    string query = "UPDATE Task SET taskName=@taskName, status=@status, StartDate=@StartDate, EndDate=@EndDate WHERE taskID=@taskID";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@taskID", taskId);
                     cmd.Parameters.AddWithValue("@taskName", taskNameBox.Text);
-                    cmd.Parameters.AddWithValue("@status", statusCombo.Text);
+                    cmd.Parameters.AddWithValue("@status", statusCombo.SelectedItem.ToString());
+                    cmd.Parameters.AddWithValue("@StartDate", startDate.Value.Date);
+                    cmd.Parameters.AddWithValue("@EndDate", endDate.Value.Date);
                     int rowsAffected = cmd.ExecuteNonQuery();
 
-                    DisplayData();
+                  
 
-                    if (rowsAffected == 0)
+                    if (rowsAffected > 0)
                     {
-                        MessageBox.Show($"No record found with taskID = {taskId}.");
+                        MessageBox.Show("Update successful!");
                     }
+                    else
+                    {
+                        MessageBox.Show("No record found with Task ID = {taskId}.");
+                    }
+
+                    DisplayData();
                 }
                 else
                 {
@@ -132,17 +156,22 @@ namespace LeopoldPlan
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@taskID", taskId);
                     int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected > 0) {
+                        MessageBox.Show("Delete successfully!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("No record found with taskID = {taskId}.");
+                    }
+
 
                     DisplayData();
 
-                    if (rowsAffected == 0)
-                    {
-                        MessageBox.Show($"No record found with taskID = {taskId}.");
-                    }
+                   
                 }
                 else
                 {
-                    MessageBox.Show("Please enter a valid Task ID.");
+                    MessageBox.Show("Please enter Task ID.");
                 }
             }
         }
@@ -159,10 +188,42 @@ namespace LeopoldPlan
                     string query = "SELECT * FROM Task WHERE taskID = @taskID";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@taskID", taskId);
+
                     SqlDataAdapter sda = new SqlDataAdapter(cmd);
                     DataSet ds = new DataSet();
                     sda.Fill(ds, "Task");
+
+                    
                     taskGridView.DataSource = ds.Tables["Task"];
+
+                    
+                    if (ds.Tables["Task"].Rows.Count > 0)
+                    {
+                        DataRow row = ds.Tables["Task"].Rows[0];
+
+                        
+                        taskNameBox.Text = row["taskName"].ToString();
+                        statusCombo.SelectedItem = row["status"].ToString();
+
+                       
+                        if (row["StartDate"] != DBNull.Value)
+                            startDate.Value = Convert.ToDateTime(row["StartDate"]);
+                        else
+                            startDate.Value = DateTime.Now;
+
+                        if (row["EndDate"] != DBNull.Value)
+                            endDate.Value = Convert.ToDateTime(row["EndDate"]);
+                        else
+                            endDate.Value = DateTime.Now;
+
+                        MessageBox.Show("Record loaded successfully!");
+                    }
+                    else
+                    {
+                        MessageBox.Show($"No record found with Task ID = {taskId}");
+                        taskNameBox.Clear();
+                        statusCombo.SelectedIndex = -1;
+                    }
                 }
                 else
                 {
@@ -170,6 +231,7 @@ namespace LeopoldPlan
                 }
             }
         }
+
 
         private void LogoutBtn_Click(object sender, EventArgs e)
         {
